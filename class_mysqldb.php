@@ -12,15 +12,23 @@ require_once plugin_dir_path(__FILE__).'/models/ContactGroup.php';
 
 class mysqldb {
 	protected \mysqli|false $mysql;
+    private string $wp_prefix;
+    private const PLUGIN_PREFIX = "contacts_";
 
 	public function __construct(){
+        global $wpdb;
 		$this->mysql = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 		mysqli_set_charset($this->mysql, "utf8");
 		if(mysqli_connect_error()){
 			echo "Something went wrong when tried to connect to the database!";
 			exit;
 		}
+        $this->wp_prefix = $wpdb->prefix;
 	}
+
+    public function get_table_name($table_name){
+        return $this->wp_prefix . self::PLUGIN_PREFIX . $table_name;
+    }
 
 	public function executeSQL($sql): \mysqli_result|bool
     {
@@ -34,7 +42,8 @@ class mysqldb {
 	}
 
     public function getPostByName(string $postName): Post{
-        $data = mysqli_fetch_object($this->executeSQL("select * from wp_contacts_posts where name='$postName'"));
+        $table = $this->get_table_name("posts");
+        $data = mysqli_fetch_object($this->executeSQL("select * from $table where name='$postName'"));
         return Post::fromObj($data);
     }
 
@@ -43,6 +52,7 @@ class mysqldb {
      * @return Contact[]
      */
     public function getContactByPost(Post $post): array {
+        $table = $this->get_table_name("holders");
 		$result = $this->executeSQL("select * from wp_contacts_holders where post=".$post->id);
         $arr = array();
 		while($rawData = mysqli_fetch_object($result)){
@@ -53,7 +63,8 @@ class mysqldb {
 
 	public function checkPost(Post $post): bool
     {
-		return mysqli_num_rows($this->executeSQL("SELECT * FROM wp_contacts_holders WHERE post=".$post->id)) > 0;
+        $table = $this->get_table_name("holders");
+		return mysqli_num_rows($this->executeSQL("SELECT * FROM $table WHERE post=".$post->id)) > 0;
 	}
 
 	public function clearPropertyForQuery(string $key, $property, $isCloser=false): string {
@@ -67,7 +78,8 @@ class mysqldb {
 
 	public function editContactByPost(Contact $contact): bool {
 		$post = $contact->post;
-		if(mysqli_num_rows($this->executeSQL("SELECT * FROM wp_contacts_posts WHERE id=".$post->id."")) == 0) return false;
+        $table = $this->get_table_name("posts");
+		if(mysqli_num_rows($this->executeSQL("SELECT * FROM $table WHERE id=".$post->id."")) == 0) return false;
 		$sql = "update wp_contacts_holders set ".$this->clearPropertyForQuery("holder", $contact->holder).
 		       $this->clearPropertyForQuery("class", $contact->class).
 				$this->clearPropertyForQuery("email", $contact->email, true)." where ".$this->clearPropertyForQuery("post", $contact->post->id, true);
@@ -80,7 +92,8 @@ class mysqldb {
      */
     private function getAllPost(): array
     {
-        $post_names = mysqli_fetch_all($this->executeSQL("select name from wp_contacts_posts"));
+        $table = $this->get_table_name("posts");
+        $post_names = mysqli_fetch_all($this->executeSQL("select name from $table"));
         $out = array();
         foreach ($post_names as $post_name){
             $out[] = $this->getPostByName($post_name[0]);
@@ -118,7 +131,8 @@ class mysqldb {
     }
 
 	private function getAllKodPost(): array {
-		$result = $this->executeSQL("select * from wp_contacts_posts where iskodpost=1");
+        $table = $this->get_table_name("posts");
+		$result = $this->executeSQL("select * from $table where iskodpost=1");
 		$out = array();
 		while($post_data = mysqli_fetch_object($result)){
             $out[] = Post::fromObj($post_data);
