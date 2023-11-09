@@ -32,4 +32,11 @@ class Contacts {
 	}
 }
 
+function install(){
+	define("INSTALL", true);
+	require_once __DIR__."/Installer.php";
+}
+
+register_activation_hook(__FILE__,'install');
+
 new Contacts;
