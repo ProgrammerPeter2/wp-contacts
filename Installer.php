@@ -1,4 +1,5 @@
 <?php
+namespace contacts;
 require_once __DIR__."/class_mysqldb.php";
 
 if(!defined("ABSPATH")){
@@ -11,14 +12,13 @@ if(!defined("INSTALL")){
 
 $db = new mysqldb();
 
-function create_table(string $table, array $fields){
-    global $db;
+function create_table(mysqldb $db, string $table, array $fields){
     $full_table = $db->get_table_name($table);
-    $sql = "create table if not exists $full_table (" + implode(", ", $fields) + ") collate=utf8mb3_hungarian_ci";
-    echo $sql;
+    $sql = "create table if not exists $full_table (" . implode(", ", $fields) . ") collate=utf8mb3_hungarian_ci";
+    return $db->executeSQL($sql) != false;
 }
 
-create_table("posts", array(
+create_table($db, "posts", array(
     "id int(255) auto_increment primary key", 
     "name varchar(255) null",
     "sort int(10) not null"
