@@ -11,7 +11,15 @@ if(!defined("INSTALL")){
 
 $db = new mysqldb();
 
-function exec_table_creation(string $table, array $fields){
+function create_table(string $table, array $fields){
+    global $db;
     $full_table = $db->get_table_name($table);
     $sql = "create table if not exists $full_table (" + implode(", ", $fields) + ") collate=utf8mb3_hungarian_ci";
+    echo $sql;
 }
+
+create_table("posts", array(
+    "id int(255) auto_increment primary key", 
+    "name varchar(255) null",
+    "sort int(10) not null"
+));
