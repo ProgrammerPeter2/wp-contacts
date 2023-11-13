@@ -23,3 +23,11 @@ create_table($db, "posts", array(
     "name varchar(255) null",
     "sort int(10) not null"
 ));
+
+create_table($db, "holders", array(
+    "id int(255) auto_increment",
+    "post int(255) not null",
+    "holder int(255) not null",
+    "class varchar(255) not null",
+    "email varchar(255) null"
+));

@@ -36,6 +36,7 @@ class mysqldb {
 		if(mysqli_error($this->mysql)){
 			echo "Something went wrong with your query!";
 			echo "<br/>".mysqli_error($this->mysql)."<br/>";
+            error_log(mysqli_error($this->mysql));
 			return false;
 		}
 		return $query;
