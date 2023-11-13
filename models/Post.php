@@ -7,7 +7,6 @@ class Post
     public readonly int $id;
     public readonly string $name;
     public readonly int $sort;
-    public readonly bool $isKod;
 
     /**
      * @param int $id
@@ -15,15 +14,14 @@ class Post
      * @param int $sort
      * @param bool $isKod
      */
-    public function __construct(int $id, string $name, int $sort, bool $isKod)
+    public function __construct(int $id, string $name, int $sort)
     {
         $this->id = $id;
         $this->name = $name;
         $this->sort = $sort;
-        $this->isKod = $isKod;
     }
 
     public static function fromObj($stdClass): Post{
-        return new Post($stdClass->id, $stdClass->name, $stdClass->sort, $stdClass->iskodpost == 1);
+        return new Post($stdClass->id, $stdClass->name, $stdClass->sort);
     }
 }
