@@ -4,11 +4,13 @@ namespace contacts;
 use contacts\models\Contact;
 use contacts\models\ContactGroup;
 use contacts\models\Post;
+use contacts\models\PostCategory;
 
 require_once dirname( plugin_dir_path( __FILE__ ), 3).'/wp-config.php';
 require_once plugin_dir_path(__FILE__).'/models/Contact.php';
 require_once plugin_dir_path(__FILE__).'/models/Post.php';
 require_once plugin_dir_path(__FILE__).'/models/ContactGroup.php';
+require_once plugin_dir_path(__FILE__).'/models/PostCategory.php';
 
 class mysqldb {
 	protected \mysqli|false $mysql;
@@ -102,6 +104,14 @@ class mysqldb {
         return $out;
     }
 
+    public function getPostById(int $id): Post|false{
+        $table = $this->get_table_name("posts");
+        if(!($posts = $this->executeSQL("select * from posts where id=$id"))){
+            return false;
+        }
+        return Post::fromObj($posts->fetch_object());
+    }
+    
     /**
      * @return array|ContactGroup[]
      */
@@ -151,5 +161,13 @@ class mysqldb {
             $out[] = ContactGroup::fromArray($this->getContactByPost($post));
         }
         return $out;
+    }
+
+    public function getPostCategoryById(int $id): array{
+        $table = $this->get_table_name("categories");
+        if(!($result = $this->executeSQL("select * from $table where id=$id"))){
+            return array();
+        }
+        return PostCategory::from_object($result->fetch_object());
     }
 }

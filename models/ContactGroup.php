@@ -44,6 +44,15 @@ class ContactGroup
         return $resp;
     }
 
+    public function renderHTML(): string 
+    {
+        $resp = '<div style="display: block"><h3>'.$this->post->name.'</h3>';
+        foreach ($this->contacts as $contact) {
+            $resp .= $item->renderToHTML(false);
+        }
+        return $resp."</div>";
+    }
+
     /**
      * @param Contact[] $contacts
      * @return ?ContactGroup
