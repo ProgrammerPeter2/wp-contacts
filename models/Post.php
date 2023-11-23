@@ -12,7 +12,6 @@ class Post
      * @param int $id
      * @param string $name
      * @param int $sort
-     * @param bool $isKod
      */
     public function __construct(int $id, string $name, int $sort)
     {

@@ -69,30 +69,4 @@ class Contact {
 	public static function toContact($contact): Contact{
 		return $contact;
 	}
-
-	public static function renderKod(string $email = "E-mail"): string {
-		$db = new mysqldb();
-		$kod = $db->getAllKodContact();
-		$resp = "<table class='wp-block-table alignwide'><thead><tr>";
-		foreach ( $kod as $item ) {
-			$headerCell = "<th>".$item->post->name."</th>";
-			$resp .= $headerCell;
-		}
-		$resp .= "</tr></thead><tbody>";
-		$longestGroup = ContactGroup::getLongestGroup($kod);
-        for($i = 0; $i < $longestGroup->length(); $i++){
-            $resp .= "<tr>";
-            foreach ( $kod as $item ) {
-                if(!empty($item)){
-	                if(!empty($item->get($i))) {
-		                $bodyCell = "<td>" . $item->get( $i )->renderToHTML( true, true, $email, "align='center'" ) . "</td>";
-		                $resp     .= $bodyCell;
-	                }else $resp .= "<td></td>";
-                }else $resp .= "<td></td>";
-            }
-            $resp .= "</tr>";
-        }
-		$resp .= "</tbody></table>";
-		return $resp;
-	}
 }

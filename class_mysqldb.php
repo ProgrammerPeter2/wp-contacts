@@ -141,28 +141,6 @@ class mysqldb {
         return $out;
     }
 
-	private function getAllKodPost(): array {
-        $table = $this->get_table_name("posts");
-		$result = $this->executeSQL("select * from $table where iskodpost=1");
-		$out = array();
-		while($post_data = mysqli_fetch_object($result)){
-            $out[] = Post::fromObj($post_data);
-        }
-        return $out;
-	}
-
-    /**
-     * @return ContactGroup[]
-     */
-    public function getAllKodContact(): array{
-        $posts = $this->getAllKodPost();
-        $out = array();
-        foreach ($posts as $post) {
-            $out[] = ContactGroup::fromArray($this->getContactByPost($post));
-        }
-        return $out;
-    }
-
     public function getPostCategoryById(int $id): array{
         $table = $this->get_table_name("categories");
         if(!($result = $this->executeSQL("select * from $table where id=$id"))){
