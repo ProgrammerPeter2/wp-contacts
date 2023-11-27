@@ -120,7 +120,7 @@ class mysqldb {
         $out = array("0" => array(), "1" => array(), "2" => array());
         foreach ($posts as $post) {
             foreach (array_keys($out) as $key) {
-                if(strval($post->sort) == $key){
+                if(strval($post->category_id) == $key){
                     $contacts = ContactGroup::fromArray($this->getContactByPost($post));
                     if(!empty($contacts)) $out[$key][] = $contacts;
                 }
@@ -147,5 +147,17 @@ class mysqldb {
             return array();
         }
         return PostCategory::from_object($result->fetch_object());
+    }
+
+    public function getAllCategories(): array{
+        $table = $this->get_table_name("categories");
+        if($result = $this->executeSQL("select * from $table")){
+            $categories = array();
+            while(!($category = $result->fetch_object())){
+                $categories[] = PostCategory::from_object($category);
+            }
+            return $categories;
+        }
+        return array();
     }
 }

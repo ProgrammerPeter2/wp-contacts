@@ -18,10 +18,15 @@ function create_table(mysqldb $db, string $table, array $fields){
     return $db->executeSQL($sql) != false;
 }
 
+create_table($db, "categories", array(
+    "id int(255) auto_increment primary key",
+    "name varchar(255)"
+));
+
 create_table($db, "posts", array(
     "id int(255) auto_increment primary key", 
     "name varchar(255) null",
-    "sort int(10) not null"
+    "category int(255) not null"
 ));
 
 create_table($db, "holders", array(
