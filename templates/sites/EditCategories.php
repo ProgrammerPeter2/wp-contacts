@@ -28,7 +28,7 @@ $db = new mysqldb();
         <script>
             const $ = jQuery;
             $(document).ready(() => {
-                alert("jquery is alive")
+                create_overlay("#create_category", "test");
             })
         </script>
     </head>

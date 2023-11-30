@@ -3,12 +3,12 @@ namespace contacts\assets;
 
 class AssetManager
 {
-    private function load_script(string $handle, string $filename){
-        wp_enqueue_script($handle, __DIR__."/js/".$filename);
+    private function load_script(string $handle, string $filename, string ...$deps){
+        wp_enqueue_script($handle, plugin_dir_url(__FILE__)."/js/".$filename, $deps);
     }
 
     private function load_style(string $handle, string $filename){
-        wp_enqueue_style($handle, __DIR__."/css/".$filename);
+        wp_enqueue_style($handle, plugin_dir_url(__FILE__)."/css/".$filename);
     }
 
     private function load_jquery(){
@@ -16,8 +16,8 @@ class AssetManager
     }
 
     public function loadAdminAssets(){
+        $this->load_jquery();
         $this->load_script("overlay-js", "overlay.js");
         $this->load_style("overlay-styles", "overlay.css");
-        $this->load_jquery();
     }
 }
