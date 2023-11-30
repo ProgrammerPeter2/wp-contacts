@@ -25,11 +25,21 @@ $db = new mysqldb();
                 border-width: 0;
             }
         </style>
+        <script>
+            const $ = jQuery;
+            $(document).ready(() => {
+                alert("jquery is alive")
+            })
+        </script>
     </head>
 	<body>
 		<h1>Posztok</h1>
         <h3>Minden kapcsolat rendelkezik egy poszttal amit az adott kapcsolat mögötti ember betölt. Az alábbi oldalon ezt lehet kezelni!</h3>
         <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
-		
+		<div class="overlay-bg">
+            <div class="overlay" id="create_category">
+                test content
+            </div>
+        </div>
 	</body>
 </html>

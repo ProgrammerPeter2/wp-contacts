@@ -20,7 +20,8 @@ function create_table(mysqldb $db, string $table, array $fields){
 
 create_table($db, "categories", array(
     "id int(255) auto_increment primary key",
-    "name varchar(255)"
+    "name varchar(255)",
+    "slug varchar(255)"
 ));
 
 create_table($db, "posts", array(

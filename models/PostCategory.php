@@ -7,11 +7,12 @@ require_once __DIR__."/ContactGroup.php";
 class PostCategory{
     public readonly int $id;
     public readonly string $name;
+    public readonly string $slug;
 
-    public function __construct(int $id, string $name){
+    public function __construct(int $id, string $name, string $slug){
         $this->id = $id;
         $this->name = $name;
-        $this->post_ids = $posts;
+        $this->slug = $slug;
     }
 
     public function renderToHTML($db, $header = false){
@@ -26,6 +27,6 @@ class PostCategory{
     }
 
     public static function from_object(\stdClass $item): PostCategory {
-        return new PostCategory(intval($item->id), $item->name);
+        return new PostCategory(intval($item->id), $item->name, $item->slug);
     }
 }
