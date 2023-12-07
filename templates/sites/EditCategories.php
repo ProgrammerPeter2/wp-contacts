@@ -25,12 +25,6 @@ $db = new mysqldb();
                 border-width: 0;
             }
         </style>
-        <script>
-            const $ = jQuery;
-            $(document).ready(() => {
-                create_overlay("#create_category", "test");
-            })
-        </script>
     </head>
 	<body>
 		<h1>Posztok</h1>
@@ -41,5 +35,10 @@ $db = new mysqldb();
                 test content
             </div>
         </div>
+        <script>
+            $(document).ready(() => {
+                init_overlay("#create_category", "test");
+            })
+        </script>
 	</body>
 </html>

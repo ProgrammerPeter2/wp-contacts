@@ -1,5 +1,3 @@
-const $ = jQuery;
-
 function init_overlay(selector, title){
     let overlay = $(selector);
     $(overlay).prepend('<div class="overlay-head"><h3>'+title+'</h3><button class="close_btn">&times;</button></div>')
@@ -7,11 +5,13 @@ function init_overlay(selector, title){
 }
 
 function show_overlay(selector){
-    $(selector).parent().hide();
-    $(selector).hide();
+    $(selector).parent().addClass("active-bg");
+    $(selector).parent().removeClass("inactive-bg");
+    $(selector).show();
 }
 
 function hide_overlay(selector){
-    $(selector).hide();
+    $(selector).parent().removeClass("active-bg");
+    $(selector).parent().addClass("inactive-bg");
     $(selector).parent().hide();
 }
