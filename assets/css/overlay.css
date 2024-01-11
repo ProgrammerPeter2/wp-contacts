@@ -8,6 +8,7 @@
     height: 100%;
     min-width: 1000px;
     min-height: 1000px;
+    justify-content: center;
 }
 
 .active-bg{
@@ -27,6 +28,9 @@
     min-width: 400px;
     min-height: 400px;
     text-align: center;
+    height: 500px;
+    display: block;
+    background: gray;
 }
 
 .overlay-head {
@@ -39,7 +43,7 @@
     padding: 5px;
 }
 
-.close-btn{
+.close_btn {
     background: none;
     border: none;
     font-size: 1.5rem;

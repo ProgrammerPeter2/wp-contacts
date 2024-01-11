@@ -30,14 +30,15 @@ $db = new mysqldb();
 		<h1>Posztok</h1>
         <h3>Minden kapcsolat rendelkezik egy poszttal amit az adott kapcsolat mögötti ember betölt. Az alábbi oldalon ezt lehet kezelni!</h3>
         <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+        <button onclick="show_overlay('#create_category')">Create category</button>
 		<div class="overlay-bg">
             <div class="overlay" id="create_category">
-                test content
+                
             </div>
         </div>
         <script>
             $(document).ready(() => {
-                init_overlay("#create_category", "test");
+                init_overlay("#create_category", "Create a Post Category");
             })
         </script>
 	</body>
