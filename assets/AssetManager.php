@@ -17,7 +17,7 @@ class AssetManager
 
     public function loadAdminAssets(){
         $this->load_jquery();
-        $this->load_script("overlay-js", "overlay.js");
+        $this->load_script("overlay-js", "overlay.js", "jquery");
         $this->load_style("overlay-styles", "overlay.css");
     }
 }
