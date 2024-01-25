@@ -160,4 +160,13 @@ class mysqldb {
         }
         return array();
     }
+
+    public function create_category(PostCategory $category_to_create){
+        $table = $this->get_table_name("categories");
+        if($this->executeSQL("insert into $table (name, slug) value ('$category_to_create->name', '$category_to_create->slug')")){
+            $category_to_create->id = $this->mysql->insert_id;
+            return $category_to_create;
+        }
+        return false;
+    }
 }
