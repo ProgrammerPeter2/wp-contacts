@@ -164,9 +164,17 @@ class mysqldb {
     public function create_category(PostCategory $category_to_create){
         $table = $this->get_table_name("categories");
         if($this->executeSQL("insert into $table (name, slug) value ('$category_to_create->name', '$category_to_create->slug')")){
-            $category_to_create->id = $this->mysql->insert_id;
+            $category_to_create = new PostCategory($this->mysql->insert_id, $category_to_create->name, $category_to_create->slug);
             return $category_to_create;
         }
         return false;
+    }
+
+    public function check_category(PostCategory $category){
+        $table = $this->get_table_name("categories");
+        if(!$result = $this->executeSQL("select * from $table where name = '$category->name' or slug = '$category->slug'")){
+            return false;
+        }
+        return $result->num_rows == 0;
     }
 }

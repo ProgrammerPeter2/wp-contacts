@@ -16,7 +16,7 @@ class ApiManager {
 	public function __construct(string $namespace) {
 		$this->example = new BaseApi($namespace, "test", "get");
 		$this->edit_contacts = new EditContactsApi($namespace, "edit", WP_REST_Server::CREATABLE);
-		$this->post_category = new PostCategoryApi($namespace, "posts/category/create", WP_REST_Server::CREATABE);
+		$this->post_category = new PostCategoryApi($namespace, "posts/category/create", WP_REST_Server::CREATABLE);
 	}
 
 	public function registerAllEndpoints(): void
