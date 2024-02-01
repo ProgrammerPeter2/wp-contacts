@@ -53,6 +53,24 @@ $db = new mysqldb();
                 init_overlay("#create_category", "Create a Post Category");
                 $("#post_category_form").on('submit', (e) => {
                     e.preventDefault()
+                    let name = $("#pcf_name").val()
+                    let slug = $("#pcf_slug").val()
+                    $.ajax({
+                        url: window.location.href.split("wp-admin")[0] + "wp-json/contacts/posts/category/create",
+                        method: "post",
+                        body: JSON.stringify({"name": name, "slug": slug}),
+                        processData: false,
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        success: (data) => {
+                            hide_overlay("#create_category")
+                            $("#pcf_name").val("")
+                            $("#pcf_slug").val("")
+                            alert("Post Category " + data.result.name + " successfully created!")
+                        },
+                        error: error => console.log(error)
+                    })
                 })
                 $("#pcf_name").on('change', () => {
                     $("#pcf_slug").val($("#pcf_name").val().toLowerCase().replace(' ', '-'))
