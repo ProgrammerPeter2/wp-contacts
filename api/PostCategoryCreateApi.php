@@ -8,7 +8,7 @@ use WP_REST_Response;
 include_once __DIR__."/BaseApi.php";
 include_once dirname(__DIR__)."/models/PostCategory.php";
 
-class PostCategoryApi extends BaseApi {
+class PostCategoryCreateApi extends BaseApi {
     public function onRest(WP_REST_Request $data)
     {
         $json_payload = json_decode($data->get_body(), true);
