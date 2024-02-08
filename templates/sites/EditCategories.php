@@ -45,12 +45,40 @@ $db = new mysqldb();
                     <button type="submit">Create it</button>
                 </form>
             </div>
+            <div class="overlay" id="create_post">
+                <form id="post_category_form">
+                    <div class="field">
+                        <p>Név:<p>
+                        <input id="post_name" type="text"/>
+                    </div>
+                    <div class="field">
+                        <p>Kategória:<p>
+                        <select id="post_category"></select>
+                    </div>
+                    <button type="submit">Create it</button>
+                </form>
+            </div>
         </div>
         <script>
             const API_ROOT = "<?=get_site_url()?>/wp-json/";
             const $ = jQuery;
             $(document).ready(() => {
                 init_overlay("#create_category", "Create a Post Category");
+                init_overlay("#create_post", "Create a new Post")
+
+                $("#post_category").on('click', () => {
+                    $.ajax({
+                        url: window.location.href.split("wp-admin")[0] + "wp-json/contacts/posts",
+                        method: "get",
+                        success: (data) => {
+                            let options = ""
+                            data.categories.forEach((category, _, __) => {
+                                options += `<option value="${category.slug}">${category.name}</option>`
+                            })
+                            $("#post_category").html(options)
+                        }
+                    })
+                })
                 $("#post_category_form").on('submit', (e) => {
                     e.preventDefault()
                     let name = $("#pcf_name").val()
