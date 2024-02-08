@@ -19,7 +19,7 @@ class ApiManager {
 		$this->example = new BaseApi($namespace, "test", "get");
 		$this->edit_contacts = new EditContactsApi($namespace, "edit", WP_REST_Server::CREATABLE);
 		$this->post_category_create = new PostCategoryCreateApi($namespace, "posts/category/create", WP_REST_Server::CREATABLE);
-		$this->post_category_fetch = new PostCategoryFetchApi($namespace, "posts", WP_REST_Server::CREATABLE);
+		$this->post_category_fetch = new PostCategoryFetchApi($namespace, "posts", "GET");
 	}
 
 	public function registerAllEndpoints(): void

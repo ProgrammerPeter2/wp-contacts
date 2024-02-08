@@ -93,7 +93,7 @@ class mysqldb {
     /**
      * @return Post[]
      */
-    private function getAllPost(): array
+    public function getAllPost(): array
     {
         $table = $this->get_table_name("posts");
         $post_names = mysqli_fetch_all($this->executeSQL("select name from $table"));
@@ -153,7 +153,7 @@ class mysqldb {
         $table = $this->get_table_name("categories");
         if($result = $this->executeSQL("select * from $table")){
             $categories = array();
-            while(!($category = $result->fetch_object())){
+            while($category = $result->fetch_object()){
                 $categories[] = PostCategory::from_object($category);
             }
             return $categories;
