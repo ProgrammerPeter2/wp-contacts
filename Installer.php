@@ -27,7 +27,8 @@ create_table($db, "categories", array(
 create_table($db, "posts", array(
     "id int(255) auto_increment primary key", 
     "name varchar(255) null",
-    "category int(255) not null"
+    "category int(255) not null",
+    "slug varchar(255) not null"
 ));
 
 create_table($db, "holders", array(

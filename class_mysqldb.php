@@ -70,6 +70,22 @@ class mysqldb {
 		return mysqli_num_rows($this->executeSQL("SELECT * FROM $table WHERE post=".$post->id)) > 0;
 	}
 
+    public function check_post_exists(Post $post){
+        $table = $this->get_table_name("posts");
+        if(!$result = $this->executeSQL("select * from $table where name = '$post->name' or slug = '$post->slug'")){
+            return false;
+        }
+        return $result->num_rows == 0;
+    }
+
+    public function create_post(Post $post) {
+        $table = $this->get_table_name("posts");
+        if($this->executeSQL("insert into $table (name, category, slug) value ('$post->name', $post->category_id, '$post->slug')")){
+            return new Post($this->mysql->insert_id, $post->name, $post->category_id, $post->slug);
+        }
+        return false;
+    }
+
 	public function clearPropertyForQuery(string $key, $property, $isCloser=false): string {
 		$keyValPair = "$key=";
 		if(is_string($property)) $keyValPair .= "\"".mysqli_escape_string($this->mysql, $property)."\"";
@@ -176,5 +192,13 @@ class mysqldb {
             return false;
         }
         return $result->num_rows == 0;
+    }
+
+    public function get_category_by_slug(string $slug){
+        $table = $this->get_table_name("categories");
+        if($result = $this->executeSQL("select * from $table where slug='$slug'")){
+            return PostCategory::from_object($result->fetch_object());
+        }
+        return false;
     }
 }
