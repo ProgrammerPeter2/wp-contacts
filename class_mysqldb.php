@@ -197,7 +197,9 @@ class mysqldb {
     public function get_category_by_slug(string $slug){
         $table = $this->get_table_name("categories");
         if($result = $this->executeSQL("select * from $table where slug='$slug'")){
-            return PostCategory::from_object($result->fetch_object());
+            $object = $result->fetch_object();
+            if(empty($object)) return false;
+            return PostCategory::from_object($object);
         }
         return false;
     }
