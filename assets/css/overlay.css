@@ -21,6 +21,15 @@
     pointer-events: none;
 }
 
+.active-overlay{
+    display: block !important;
+}
+
+.inactive-overlay{
+    display: none !important;
+    pointer-events: none;
+}
+
 .overlay{
     background: white;
     border: 1px black solid;
@@ -29,7 +38,6 @@
     min-height: 400px;
     text-align: center;
     height: 500px;
-    display: block;
     background: gray;
 }
 
