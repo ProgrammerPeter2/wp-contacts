@@ -31,6 +31,7 @@ $db = new mysqldb();
         <h3>Minden kapcsolat rendelkezik egy poszttal amit az adott kapcsolat mögötti ember betölt. Az alábbi oldalon ezt lehet kezelni!</h3>
         <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
         <button onclick="show_overlay('#create_category')">Create category</button>
+        <button id="create_post_btn">Create Post</button>
 		<div class="overlay-bg inactive-bg">
             <div class="overlay" id="create_category">
                 <form id="post_category_form">
@@ -46,7 +47,7 @@ $db = new mysqldb();
                 </form>
             </div>
             <div class="overlay" id="create_post">
-                <form id="post_category_form">
+                <form id="post_create_form">
                     <div class="field">
                         <p>Név:<p>
                         <input id="post_name" type="text"/>
@@ -54,6 +55,10 @@ $db = new mysqldb();
                     <div class="field">
                         <p>Kategória:<p>
                         <select id="post_category"></select>
+                    </div>
+                    <div class="field">
+                        <p>Azonosító:<p>
+                        <input id="post_slug" type="text"/>
                     </div>
                     <button type="submit">Create it</button>
                 </form>
@@ -66,19 +71,50 @@ $db = new mysqldb();
                 init_overlay("#create_category", "Create a Post Category");
                 init_overlay("#create_post", "Create a new Post")
 
-                $("#post_category").on('click', () => {
+                $("#create_post_btn").on('click', () => {
                     $.ajax({
                         url: window.location.href.split("wp-admin")[0] + "wp-json/contacts/posts",
                         method: "get",
                         success: (data) => {
-                            let options = ""
+                            let options = "<option value=''>Kérlek válassz!</option>"
                             data.categories.forEach((category, _, __) => {
                                 options += `<option value="${category.slug}">${category.name}</option>`
                             })
                             $("#post_category").html(options)
+                            show_overlay('#create_post')
                         }
                     })
                 })
+                $("#post_name").on('change', () => {
+                    $("#post_slug").val($("#post_name").val().toLowerCase().replace(' ', '-'))
+                })
+                $("#post_create_form").on('submit', (e) => {
+                    e.preventDefault()
+                    let name = $("#post_name").val()
+                    let category = $("#post_category").val()
+                    let slug = $("#post_slug").val()
+                    if(category === '') {
+                        alert("A kategória mező üres!")
+                        return
+                    }
+
+                    $.ajax({
+                        url: API_ROOT + "contacts/posts/create",
+                        method: "put",
+                        body: JSON.stringify({"name": name, "category": category, "slug": slug}),
+                        processData: false,
+                        headers: {"Content-Type": "application/json"},
+                        error: error => alert(error),
+                        success: data => {
+                            hide_overlay("#create_post")
+                            $("#post_name").val("")
+                            $("#post_category").val("")
+                            $("#post_slug").val("")
+                            alert(`Post - ${data.name} - created successfully!`)
+                        }
+                    })
+                })
+
                 $("#post_category_form").on('submit', (e) => {
                     e.preventDefault()
                     let name = $("#pcf_name").val()
