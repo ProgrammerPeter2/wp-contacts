@@ -27,6 +27,8 @@ class AssetManager
     public function loadAdminAssets(){
         $this->load_jquery();
         $this->load_script("overlay-js", "overlay.js", array("contact_categories"),"jquery");
+        $this->load_script("api_utils", "api_utils.php", array("contact_categories"), "jquery");
+        $this->load_script("posts-js", "posts.js", array("contact_categories"), "jquery", "api_utils");
         $this->load_style("overlay-styles", "overlay.css", array("contact_categories"));
     }
 }
