@@ -73,7 +73,7 @@ $db = new mysqldb();
 
                 $("#create_post_btn").on('click', () => {
                     $.ajax({
-                        url: window.location.href.split("wp-admin")[0] + "wp-json/contacts/posts",
+                        url: API_ROOT + "contacts/posts/category",
                         method: "get",
                         success: (data) => {
                             let options = "<option value=''>Kérlek válassz!</option>"
@@ -120,7 +120,7 @@ $db = new mysqldb();
                     let name = $("#pcf_name").val()
                     let slug = $("#pcf_slug").val()
                     $.ajax({
-                        url: window.location.href.split("wp-admin")[0] + "wp-json/contacts/posts/category/create",
+                        url: API_ROOT + "contacts/posts/category/create",
                         method: "post",
                         body: JSON.stringify({"name": name, "slug": slug}),
                         processData: false,
